@@ -1,28 +1,45 @@
-import React from 'react';
-import {SafeAreaView, Text, View, StyleSheet} from 'react-native';
+import React, {useState,useEffect} from 'react';
+import {SafeAreaView, Text, View, StyleSheet, FlatList} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import store from './src/redux/store';
-import { Provider } from 'react-redux';
-import AddToCartBtn from './src/basicElements/AddToCartBtn';
+import CardComponent from './src/Components/CardComponent';
+import { request } from './utils/request';
 
 function App() {
+  const [beer,setBeer]= useState()
+
+  const getBeer = async () => {
+    try {
+      const response = await request('/beer'); 
+      const beerData = await response.json();
+      console.log('RESPONSE--->', beerData);
+      setBeer(beerData.slice(1,10)); 
+    } catch (error) {
+      console.error('Error fetching beer:', error);
+    }
+  };
+ 
+useEffect(()=>{
+  getBeer()
+},[])
   const backgroundStyle = {
     backgroundColor: Colors.lighter,
   };
-  const product = {
-    id: 1,
-    name: 'Sample Product',
-    price: 19.99,
-    // Add other product details as needed
-  };
-
-
+  const renderItem=({item})=>(
+    <CardComponent
+    id={item._id}
+    imageUrl={item.image_url}
+    name={item.name}
+    tagline={item.tagline} />
+  )
   return (
     <Provider store={store}>
       <SafeAreaView style={backgroundStyle}>
       <View>
-        <Text style={styles.sectionTitle}>Brewery App</Text>
-        <AddToCartBtn product={product}/>
+    <FlatList
+    data={beer}
+    renderItem={renderItem}
+    horizontal={true}
+    />
       </View>
     </SafeAreaView>
     </Provider>
