@@ -2,6 +2,8 @@
 #
 .DS_Store
 
+#dependencies
+.env
 # Xcode
 #
 build/
