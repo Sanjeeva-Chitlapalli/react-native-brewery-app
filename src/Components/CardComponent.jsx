@@ -1,8 +1,12 @@
 import React from 'react'
 import { View, Text, StyleSheet,Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, updateCartItem, removeFromCart } from '../redux/cartSlice'; // Update the path
+import { selectCartItems } from '../redux/cartSlice';
 
 const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) => {
+  const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const cartItem = cartItems.find(item => item.product.id === product.id);
   const count = cartItem ? cartItem.count : 0;
