@@ -40,7 +40,7 @@ const AddToCartBtn = ({ product }) => {
         <View style={styles.button}>
             {count > 0 && (
         <TouchableOpacity style={styles.buttonElements} onPress={handleAddToCart}>
-          <Text style={styles.buttonText}>+</Text>
+          <Icon name="minuscircleo" size={25} color='#ED5A6B' />
         </TouchableOpacity>
       )}
       <TouchableOpacity  onPress={handleAddToCart}>
@@ -48,7 +48,7 @@ const AddToCartBtn = ({ product }) => {
       </TouchableOpacity>
       {count > 0 && (
         <TouchableOpacity style={styles.buttonElements} onPress={handleRemoveFromCart}>
-          <Text style={styles.buttonText}>-</Text>
+          <Icon name="pluscircleo" size={25} color='#ED5A6B' />
         </TouchableOpacity>
       )}
         </View>
