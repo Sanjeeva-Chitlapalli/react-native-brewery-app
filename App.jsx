@@ -1,61 +1,78 @@
-import React, {useState,useEffect} from 'react';
-import {SafeAreaView, Text, View, StyleSheet, FlatList} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, Text, View, StyleSheet, FlatList } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import CardComponent from './src/Components/CardComponent';
 import { request } from './utils/request';
 import store from './src/redux/store';
 import { Provider } from 'react-redux';
 import SlidingBanner from './src/Components/SlidingBanner';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from './src/Screens/Home';
+import Profile from './src/Screens/Profile';
+import Socializing from './src/Screens/Socializing';
+import Cart from './src/Screens/Cart';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/AntDesign'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Categories from './src/Screens/Categories';
+
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
+
 
 function App() {
-  const [beer,setBeer]= useState()
 
-  const getBeer = async () => {
-    try {
-      const response = await request('/beer'); 
-      const beerData = await response?.json();
-      console.log('RESPONSE--->', beerData);
-      setBeer(beerData?.slice(1,10)); 
-    } catch (error) {
-      console.error('Error fetching beer:', error);
-    }
-  };
- 
-useEffect(()=>{
-  // getBeer()
-},[])
   const backgroundStyle = {
     backgroundColor: Colors.lighter,
   };
+  const Tab = createMaterialBottomTabNavigator();
 
-  const bannerImages = [
-  {source: require('./src/assets/images/beer_ad.png')},
-  {source: require('./src/assets/images/beer_ad1.png')},
-  {source: require('./src/assets/images/beer_ad2.png')},
-];
 
-  
-  const renderItem=({item})=>(
-    <CardComponent
-    id={item._id}
-    imageUrl={item.image_url}
-    name={item.name}
-    tagline={item.tagline} />
-  )
   return (
     <Provider store={store}>
-      <SafeAreaView style={backgroundStyle}>
-      <View>
-      <SlidingBanner images={bannerImages}/>
-    <FlatList
-    data={beer}
-    renderItem={renderItem}
-    horizontal={true}
-    />
-      </View>
-    </SafeAreaView>
+      <NavigationContainer>
+        <Tab.Navigator
+        initialRouteName="Home"
+        activeColor="#ffff"
+        barStyle={{ backgroundColor: 'tomato' }}
+        >
+          <Tab.Screen name="Home" component={Home} options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}/>
+        <Tab.Screen name="Categories" component={Categories} options={{
+        tabBarLabel: 'Categories',
+        tabBarIcon: ({ color }) => (
+          <MaterialIcons name="category" color={color} size={26} />
+        ),
+      }}/>
+          <Tab.Screen name="Community" component={Socializing} options={{
+          tabBarLabel: 'Community',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="google-circles-communities" color={color} size={26} />
+          ),
+        }}/>
+          <Tab.Screen name="Profile" component={Profile} options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="user" color={color} size={26} />
+          ),
+        }}/>
+          
+        </Tab.Navigator>
+      </NavigationContainer>
     </Provider>
-    
+
   );
 }
 
