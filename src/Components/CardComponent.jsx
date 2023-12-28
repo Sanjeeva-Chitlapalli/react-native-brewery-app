@@ -1,14 +1,35 @@
-import React,{useState, useEffect} from 'react'
-import { View, Text, StyleSheet, useWindowDimensions,Image, TouchableOpacity } from 'react-native'
-import { request } from '../../utils/request'
+import React from 'react'
+import { View, Text, StyleSheet,Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, updateCartItem, removeFromCart } from '../redux/cartSlice'; // Update the path
+import { selectCartItems } from '../redux/cartSlice';
 
 const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) => {
-  const [itemButton, setItemButton] = useState(false)
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  const cartItem = cartItems.find(item => item.product.id === product.id);
+  const count = cartItem ? cartItem.count : 0;
 
-  const addItemToBasket = () => {
-     setItemButton(true)
-}
+  const handleAddToCart = () => {
+    if (count === 0) {
+      // If count is 0, add the item to the cart
+      dispatch(addToCart({ product, count: 1 }));
+    } else {
+      // If count is more than 0, update the count
+      dispatch(updateCartItem({ productId: product.id, count: count + 1 }));
+    }
+  };
+
+  const handleRemoveFromCart = () => {
+    if (count > 0) {
+      // If count is more than 0, update the count
+      dispatch(updateCartItem({ productId: product.id, count: count - 1 }));
+    } else {
+      // If count is 0, remove the item from the cart
+      dispatch(removeFromCart(product.id));
+    }
+  };
 
   return (
     <View style={styles.cardContainer}>
@@ -33,19 +54,18 @@ const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) =
                             <TouchableOpacity>
                                 <Text style={styles.more}>More Details {">"}</Text>
                             </TouchableOpacity>
-                            {itemButton ? (
+                            {count>0 ? (
                                 <View style={styles.counterButton}>
-                                    <TouchableOpacity  onPress={()=>{}}>
+                                    <TouchableOpacity  onPress={handleRemoveFromCart}>
                                         <Icon name="minuscircleo" size={25} color='#ED5A6B' />
                                     </TouchableOpacity>
-                                    <Text style={styles.couterButtonText}>0</Text>
-                                    <TouchableOpacity onPress={()=>{}}>
+                                    <Text style={styles.couterButtonText}>{count}</Text>
+                                    <TouchableOpacity onPress={handleAddToCart}>
                                         <Icon name="pluscircleo" size={25} color='#ED5A6B' />
                                     </TouchableOpacity>
                                 </View>
                             ) : (
-
-                                <TouchableOpacity style={styles.button} onPress={()=>setItemButton(true)}>
+                                <TouchableOpacity style={styles.button} onPress={handleAddToCart}>
                                     <Text style={styles.buttonText}>Add</Text>
                                 </TouchableOpacity>
                             )}
