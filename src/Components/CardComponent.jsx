@@ -1,12 +1,13 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { View, Text, StyleSheet,Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateCartItem, removeFromCart } from '../redux/cartSlice'; // Update the path
 import { selectCartItems } from '../redux/cartSlice';
-import AddToCartBtn from '../basicElements/AddToCartBtn';
+import DetailModal from './DetailModal';
 
-const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) => {
+const CardComponent = ({product, id, name, imageUrl, tagline, rating,price, size_ml }) => {
+  const [isDetailModalVisible, setDetailModalVisible] = useState(false);
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const product={id, name, imageUrl, tagline, rating,price, size_ml };
@@ -53,7 +54,7 @@ const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) =
                         </View> */}
                         </View>
                         <View style={styles.footer}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => setDetailModalVisible(true)}>
                                 <Text style={styles.more}>More Details {">"}</Text>
                             </TouchableOpacity>
                             <AddToCartBtn product={product}/>
@@ -77,7 +78,19 @@ const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) =
                         </View>
                     </View>
      </View>
+     <DetailModal
+                isVisible={isDetailModalVisible}
+                name={product.name}
+                abv={product.abv}
+                ibu={product.ibu}
+                ph={product.ph}
+                brewers_tips={product.brewers_tips}
+                imageUrl={product.image_url}
+                onClose={() => setDetailModalVisible(false)}
+                isDetailModalVisible={isDetailModalVisible}
+            />
     </View>
+    
   )
 }
 const styles= StyleSheet.create({
