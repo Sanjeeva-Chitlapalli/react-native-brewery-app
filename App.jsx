@@ -6,6 +6,7 @@ import { request } from './utils/request';
 import store from './src/redux/store';
 import { Provider } from 'react-redux';
 import SlidingBanner from './src/Components/SlidingBanner';
+import CartScreen from './src/Screens/CartScreen';
 
 function App() {
   const [beer,setBeer]= useState()
@@ -22,7 +23,7 @@ function App() {
   };
  
 useEffect(()=>{
-  // getBeer()
+  getBeer()
 },[])
   const backgroundStyle = {
     backgroundColor: Colors.lighter,
@@ -42,16 +43,26 @@ useEffect(()=>{
     name={item.name}
     tagline={item.tagline} />
   )
+
+
   return (
     <Provider store={store}>
       <SafeAreaView style={backgroundStyle}>
       <View>
-      <SlidingBanner images={bannerImages}/>
-    <FlatList
-    data={beer}
-    renderItem={renderItem}
-    horizontal={true}
-    />
+      {/* <SlidingBanner images={bannerImages}/>
+      <Text style={styles.sectionTitle}>Recommended</Text>
+      <FlatList
+        data={beer}
+        renderItem={renderItem}s
+        horizontal={true}
+      />
+      <Text style={styles.sectionTitle}>Most popular</Text>
+      <FlatList
+        data={beer}
+        renderItem={renderItem}
+        horizontal={true}
+      /> */}
+      <CartScreen/>
       </View>
     </SafeAreaView>
     </Provider>
@@ -61,8 +72,8 @@ useEffect(()=>{
 
 const styles = StyleSheet.create({
   sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '400',
     color: 'black',
   },
 });

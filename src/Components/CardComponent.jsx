@@ -4,10 +4,12 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateCartItem, removeFromCart } from '../redux/cartSlice'; // Update the path
 import { selectCartItems } from '../redux/cartSlice';
+import AddToCartBtn from '../basicElements/AddToCartBtn';
 
 const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
+  const product={id, name, imageUrl, tagline, rating,price, size_ml };
   const cartItem = cartItems.find(item => item.product.id === product.id);
   const count = cartItem ? cartItem.count : 0;
 
@@ -54,7 +56,8 @@ const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) =
                             <TouchableOpacity>
                                 <Text style={styles.more}>More Details {">"}</Text>
                             </TouchableOpacity>
-                            {count>0 ? (
+                            <AddToCartBtn product={product}/>
+                            {/* {count>0 ? (
                                 <View style={styles.counterButton}>
                                     <TouchableOpacity  onPress={handleRemoveFromCart}>
                                         <Icon name="minuscircleo" size={25} color='#ED5A6B' />
@@ -68,7 +71,7 @@ const CardComponent = ({ id, name, imageUrl, tagline, rating,price, size_ml }) =
                                 <TouchableOpacity style={styles.button} onPress={handleAddToCart}>
                                     <Text style={styles.buttonText}>Add</Text>
                                 </TouchableOpacity>
-                            )}
+                            )} */}
 
 
                         </View>

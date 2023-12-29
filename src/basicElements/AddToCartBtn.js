@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateCartItem, removeFromCart } from '../redux/cartSlice'; // Update the path
 import { selectCartItems } from '../redux/cartSlice'; // Update the path
+import Icon from 'react-native-vector-icons/AntDesign'
 
 const AddToCartBtn = ({ product }) => {
   const dispatch = useDispatch();
@@ -40,7 +41,8 @@ const AddToCartBtn = ({ product }) => {
         <View style={styles.button}>
             {count > 0 && (
         <TouchableOpacity style={styles.buttonElements} onPress={handleAddToCart}>
-          <Icon name="minuscircleo" size={25} color='#ED5A6B' />
+          {/* <Icon name="minuscircleo" size={25} color='#ED5A6B' /> */}
+          <Text>+</Text>
         </TouchableOpacity>
       )}
       <TouchableOpacity  onPress={handleAddToCart}>
@@ -48,7 +50,8 @@ const AddToCartBtn = ({ product }) => {
       </TouchableOpacity>
       {count > 0 && (
         <TouchableOpacity style={styles.buttonElements} onPress={handleRemoveFromCart}>
-          <Icon name="pluscircleo" size={25} color='#ED5A6B' />
+          {/* <Icon name="pluscircleo" size={25} color='#ED5A6B' /> */}
+          <Text>-</Text>
         </TouchableOpacity>
       )}
         </View>
